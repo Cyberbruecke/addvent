@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content="width=device-width">
+        <title>Research Study</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .cont {
+                text-align: center;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #007bff;
+            }
+
+            .btn.opt {
+                background-color: #dc3545;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="cont">
+            <br><br><br>
+            <h1>Research Study</h1>
+            <p>This is a research study on reachability in the Internet</p><br>
+
+            <div class="btn-cont">
+                <a href="/info.html" class="btn">More Information</a>
+                <a href="/opt-out" class="btn opt">Opt-Out</a>
+            </div>
+        </div>
+
+        {% if challenges %}
+        <script>
+            function answer(domain, sig, answer, reporting_domain) {
+                const img = document.createElement("img");
+                img.setAttribute("src", "https://" + reporting_domain + "/addv/{{ key }}/val/answer?authtime={{ auth_time }}&domain=" + domain + "&sig=" + sig + "&answer=" + answer + "&time=" + Date.now());
+                img.width = 0;
+                img.height = 0;
+                document.body.appendChild(img);
+            }
+        </script>
+        {% endif %}
+
+        {% for domain, challenge, sig, reporting_domain in challenges %}
+        <img width="0" height="0" src="https://{{ domain }}/{{ challenge }}" onload='answer("{{ domain }}", "{{ sig }}", "success", "{{ reporting_domain }}")' onerror='answer("{{ domain }}", "{{ sig }}", "error", "{{ reporting_domain }}")'/>
+        {% endfor %}
+
+    </body>
+</html>
